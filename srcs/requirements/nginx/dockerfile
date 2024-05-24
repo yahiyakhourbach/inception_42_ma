@@ -1,0 +1,15 @@
+FROM debian:bullseye
+
+RUN  apt-get update -y &&\
+     apt-get install nginx -y && \
+     apt-get install openssl
+
+RUN  mkdir -p /etc/nginx/ssl && \
+     cd /etc/nginx/ssl && \
+     openssl genrsa -out certificat.key 2048 && \
+     openssl req -new -key certificat.key -out certificat.csr -subj "/C=MA/ST=''/L=''/O=''/CN='localhost'" && \
+     openssl x509 -req -days 365 -in certificat.csr -signkey certificat.key -out certificat.crt  
+
+COPY conf/nginx.conf /etc/nginx/
+
+CMD [ "nginx", "-g", "daemon off;"]

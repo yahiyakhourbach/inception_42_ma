@@ -1,0 +1,17 @@
+FROM debian:bullseye
+
+ARG DB_NAME
+ARG DB_USER
+ARG DB_ROOT_PASS
+ARG DB_PASS
+
+RUN  apt-get update -y && \
+     apt-get install mariadb-server -y
+
+COPY tools/script.sh /
+
+RUN chmod +x ./script.sh
+
+RUN bash ./script.sh
+
+CMD ["mysqld"]

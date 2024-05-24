@@ -1,0 +1,10 @@
+FROM debian:bullseye
+
+RUN apt-get update -y && \
+    apt-get install php7.4 php-fpm php-mysql mariadb-client wget -y
+
+COPY tools/script.sh  .
+
+RUN mkdir -p /run/php/ && chown -R www-data:www-data /run/php/ && chmod +x script.sh
+
+CMD ["./script.sh"]
